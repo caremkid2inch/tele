@@ -1,0 +1,141 @@
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="unlimited cloud Storage">
+  <title>Unlimited - Cloud Storage</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <link href="main.css" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <script type="module">
+    import { FFmpeg } from "./ffmpeg/index.js"
+    window.FFmpeg = FFmpeg
+  </script>
+
+</head>
+<body class="light-theme">
+  <nav class="main-nav">
+    <div class="logo">
+      <a onclick="refreshpage()">
+        <img src="favicon.png" alt="Logo" width="50" height="50">
+      </a>
+    </div>
+    <div class="cli">
+      <ul class="navl"></ul>
+    </div>
+    <div class="profile" id="settingsclick" onclick="opensettings()">
+      <img src="cog.png" alt="Profile Picture" class="settingicon">
+    </div>
+  </nav>
+  <div id="settings" style="display: none;">
+    <p>Dark Theme</p>
+    <label class="switch">
+      <input type="checkbox" id="theme-switcher" onchange="changeTheme()" />
+      <span class="slider"></span>
+    </label>
+    <p>Show Bin</p>
+    <label class="switch">
+      <input type="checkbox" id="bin-switcher" onchange="changeBinVis()" />
+      <span class="slider"></span>
+    </label>
+    <p>Cache Controls</p>
+    <button onclick="cleardirs()">Clear Directory Cache</button>
+    <p>Change Profile</p>
+    <select id="profile-selector" onchange="changeProfile()">
+      <option value="">Profile 1</option>
+      <option value="2">Profile 2</option>
+      <option value="3">Profile 3</option>
+      <option value="4">Profile 4</option>
+      <option value="5">Hidden</option>
+    </select>
+
+
+    <p>Account Controls</p>
+    <button onclick="getlogin()">Save passkey to file</button>
+    <button onclick="logout()">Log out</button>
+  </div>
+
+  <div id="auth" style="display: none;">
+    <center>
+      <h1>Login with passkey</h1>
+      <div class="form-container">
+        <div id="start">
+          <p>Dont have a passkey? create one below</p>
+          <button id="makekey" onclick="makekey()">Create a passkey</button>
+          <br><br>
+          <p>Have a passkey? login below</p>
+          <button id="signup" onclick="loginkeyHTML()">Login</button>
+         </div>
+
+       <div id="newaccount" style="display: none;">
+        <input type="text" id="ai" placeholder="Enter roblox api key">
+        <input type="text" id="ui" placeholder="Enter your universe ID">
+        <input type="text" id="ek" placeholder="Enter your Encryption key">
+        <a id="makekey" onclick="generatekey()">Generate New Encryption Key</a>
+        <br>
+        <button id="signup" onclick="generatepasskey()">Create passkey</button>
+        <p>Dont have roblox API keys? <a href="https://create.roblox.com/dashboard/credentials?activeTab=ApiKeysTab">MAKE ONE HERE</a> Select universe datastore, choose a place, and add all permissions, make the access ip: 0.0.0.0/0. </p>
+        <p>If you lose your API key create a new one on the same roblox universe and all your files will be safe</p>
+        <p>After setting ur credentials hover over the person icon in the top right and click "save passkey to file" to get access back into your account from anywhere, you can save this in your google drive, write it down so u can access your files again</p>
+        <a onclick="back()">Back</a>
+       </div>
+
+       <div id="enterpass" style="display: none;">
+        <input type="text" id="passkeee" placeholder="Enter your passkey">
+        <br>
+        <button id="signup" onclick="loginfrombut()">Login</button>
+        <br>
+        <br>
+        <a onclick="back()">Back</a>
+       </div>
+
+      </div>
+    </center>
+  </div>
+  <div id="content" style="display: none;">
+    <div id="upload-progress-popup" style="position: fixed; top: 20px; right: 20px; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 10px; border-radius: 5px; display: none;">
+      <p id="upload-text">Connecting...</p>
+      <div id="upload-progress-bar" style="width: 100%; height: 10px; background-color: white; margin-top: 5px; border-radius: 5px;">
+        <div id="upload-progress" style="width: 0%; height: 100%; background-color: green; border-radius: 5px;"></div>
+      </div>
+      <p id="upload-text2"></p>
+    </div>
+
+    <div id="filelol" class="popup" style="display: none;" onclick="closePopup(event)">
+      <div class="popup-content" id="filespot" onclick="event.stopPropagation()">
+        
+      </div>
+    </div>
+    
+    <script>
+      function closePopup(event) {
+        document.getElementById('filelol').style.display = 'none';
+        window.streamingfile = false;
+        document.getElementById('filespot').innerHTML = '';
+      }
+    </script>
+    
+    
+
+    <center>
+      <div class="files" id="uploads-container" style="width: 100%">
+        <br>
+        <br>
+        <input type="file" id="file-input" multiple style="display: none;">
+        <input type="file" id="folder-input" webkitdirectory style="display: none;">
+        <button class="upload-button" onclick="uploadFile()">
+          <i class="material-icons inline-icon">upload</i>Upload File's</button>
+        <button class="upload-button" onclick="createFolder()">
+          <i class="material-icons inline-icon">folder</i>Create Folder</button>
+        <button class="upload-button" onclick="uploadFolder()">
+          <i class="material-icons inline-icon">drive_folder_upload</i>Upload Folder</button>
+        <br>
+        <br>
+        <div id="dir"></div>
+        <div id="fileslist"></div>
+      </div>
+    </center>
+  </div>
+  <script src="app.js"></script>
+
+</body>
